@@ -23,6 +23,12 @@ jobs:
     - name: Build
       run: dotnet build ./MiNotSoSimpleApp/MiNotSoSimpleApp.csproj --configuration Release
 
+    - name: BuildTest
+      run: dotnet build ./MiNotSoSimpleAppTests/MiNotSoSimpleAppTests.csproj --configuration Release
+
+    - name: RunTest
+      run: dotnet test 
+
     - name: Publish
       run: dotnet publish ./MiNotSoSimpleApp/MiNotSoSimpleApp.csproj --configuration Release --output ./publish
 
