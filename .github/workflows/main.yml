@@ -24,7 +24,7 @@ jobs:
       run: dotnet build ./MiNotSoSimpleApp/MiNotSoSimpleApp.csproj --configuration Release
 
     - name: Publish
-      run: dotnet publish ./MiNotSoSimpleApp/MiNotSosimpleApp.csproj --configuration Release --output ./publish
+      run: dotnet publish ./MiNotSoSimpleApp/MiNotSoSimpleApp.csproj --configuration Release --output ./publish
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
