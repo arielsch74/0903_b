@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore ./MiNotSoSimpleApp/MiNotSoSimpleApp.csproj
       
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build ./MiNotSoSimpleApp/MiNotSoSimpleApp.csproj --configuration Release
 
     - name: Publish
       run: dotnet publish ./MinotSoSimpleApp/MiNotSosimpleApp.csproj --configuration Release --output ./publish
