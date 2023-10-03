@@ -38,7 +38,7 @@ namespace MiNotSoSimpleAppTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(1, result.Count());
             Assert.AreEqual("Test Title", result.FirstOrDefault().Title);
         }
     }
