@@ -1,0 +1,71 @@
+name: Build, Test, and Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+      
+    - name: Dependencias
+      run: dotnet restore ./MiNotSoSimpleApp/MiNotSoSimpleApp.csproj
+      
+    - name: Build
+      run: dotnet build ./MiNotSoSimpleApp/MiNotSoSimpleApp.csproj --configuration Release
+
+    - name: BuildTest
+      run: dotnet build ./MiNotSoSimpleAppTests/MiNotSoSimpleAppTests.csproj 
+
+    - name: RunTest
+      run: dotnet test ./MiNotSoSimpleAppTests/MiNotSoSimpleAppTests.csproj --configuration Release --no-build --verbosity normal
+      continue-on-error: true # Permitir que el flujo de trabajo continúe incluso si hay errores en las pruebas
+
+    - name: Generate HTML Reports
+      run: |
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        reportgenerator -reports:./test-results/TestResult.xml -targetdir:./test-results/html
+
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: './test-results'
+  
+    - name: Upload HTML Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: html-reports
+        path: './test-results/html'
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: test-results
+        path: './test-results'
+    
+    - name: Download HTML Reports
+      uses: actions/download-artifact@v3
+      with:
+        name: html-reports
+        path: './html-reports'
+      
+    - name: Output contents
+      run: ls ./test-results ./html-reports
+
+    - name: Deploy to Server
+      run: |
+        echo "Deploy"
